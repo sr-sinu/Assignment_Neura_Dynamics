@@ -4,8 +4,11 @@ from rest_framework.views import APIView
 from .models import Invoice
 from .serializers import InvoiceSerializer
 
+# API view to handle creation and updating of invoices
 class InvoiceAPIView(APIView):
-    #Create Invoice
+    """
+    Handle POST request to create a new invoice along with its details.
+    """
     def post(self, request, *args, **kwargs):
         serializer = InvoiceSerializer(data=request.data)
         if serializer.is_valid():
@@ -13,8 +16,11 @@ class InvoiceAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    #Update Invoice
+
     def put(self, request, *args, **kwargs):
+        """
+        Handle PUT request to update an existing invoice and its details.
+        """
         try:
             invoice = Invoice.objects.get(invoice_number=request.data['invoice_number'])
         except Invoice.DoesNotExist:
